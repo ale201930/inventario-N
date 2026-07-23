@@ -224,7 +224,7 @@ export default function AdminUsersPage() {
           <div>
             <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e1b4b' }}>Gestión de Usuarios y Accesos</h1>
             <p style={{ color: '#64748b', fontSize: '0.85rem' }}>
-              Asignación de módulos, control de permisos y eliminación de cuentas.
+              Asignación de módulos, control de permisos y administración de cuentas.
             </p>
           </div>
 
@@ -233,75 +233,103 @@ export default function AdminUsersPage() {
           </button>
         </div>
 
-        <div className="glass-panel" style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.9rem' }}>
+        <div className="glass-panel" style={{ overflowX: 'auto', padding: '0.5rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid #dbeafe', background: '#eff6ff', color: '#1e40af' }}>
-                <th style={{ padding: '1rem' }}>ID</th>
-                <th style={{ padding: '1rem' }}>Nombre Completo</th>
-                <th style={{ padding: '1rem' }}>Correo Electrónico</th>
-                <th style={{ padding: '1rem' }}>Rol Principal</th>
-                <th style={{ padding: '1rem' }}>Módulos Asignados</th>
-                <th style={{ padding: '1rem' }}>Estado</th>
-                <th style={{ padding: '1rem', textAlign: 'center' }}>Acciones</th>
+              <tr style={{ borderBottom: '2px solid #dbeafe', background: '#eff6ff', color: '#1e40af' }}>
+                <th style={{ padding: '0.85rem 1rem', width: '60px', textAlign: 'center' }}>ID</th>
+                <th style={{ padding: '0.85rem 1rem', minWidth: '180px' }}>Nombre Completo</th>
+                <th style={{ padding: '0.85rem 1rem', minWidth: '220px' }}>Correo Electrónico</th>
+                <th style={{ padding: '0.85rem 1rem', width: '150px', textAlign: 'center' }}>Rol Principal</th>
+                <th style={{ padding: '0.85rem 1rem', width: '160px', textAlign: 'center' }}>Módulos Asignados</th>
+                <th style={{ padding: '0.85rem 1rem', width: '110px', textAlign: 'center' }}>Estado</th>
+                <th style={{ padding: '0.85rem 1rem', width: '340px', textAlign: 'center' }}>Acciones & Edición</th>
               </tr>
             </thead>
             <tbody>
               {users.map(u => {
                 const numPermisos = Array.isArray(u.permisos) ? u.permisos.length : 0;
+                const isMainAdmin = u.id === 1;
+
                 return (
-                  <tr key={u.id} style={{ borderBottom: '1px solid #eff6ff' }}>
-                    <td style={{ padding: '1rem', color: '#64748b', fontFamily: 'monospace' }}>#{u.id}</td>
-                    <td style={{ padding: '1rem', fontWeight: 700, color: '#0f172a' }}>{u.nombre}</td>
-                    <td style={{ padding: '1rem', color: '#64748b' }}>{u.email}</td>
-                    <td style={{ padding: '1rem' }}>
-                      <span className={`badge ${u.rol === 'ADMIN' ? 'badge-info' : 'badge-success'}`}>
+                  <tr key={u.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '0.85rem 1rem', color: '#64748b', fontFamily: 'monospace', fontWeight: 700, textAlign: 'center', verticalAlign: 'middle' }}>
+                      #{u.id}
+                    </td>
+
+                    <td style={{ padding: '0.85rem 1rem', fontWeight: 800, color: '#0f172a', verticalAlign: 'middle' }}>
+                      {u.nombre}
+                    </td>
+
+                    <td style={{ padding: '0.85rem 1rem', color: '#475569', verticalAlign: 'middle' }}>
+                      {u.email}
+                    </td>
+
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center', verticalAlign: 'middle' }}>
+                      <span className={`badge ${u.rol === 'ADMIN' ? 'badge-info' : 'badge-success'}`} style={{ width: '120px', justifyContent: 'center', display: 'inline-flex' }}>
                         {u.rol === 'ADMIN' ? 'ADMINISTRADOR' : 'TRABAJADOR'}
                       </span>
                     </td>
-                    <td style={{ padding: '1rem' }}>
-                      <span className="badge badge-info" style={{ fontSize: '0.72rem' }}>
+
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center', verticalAlign: 'middle' }}>
+                      <span className="badge badge-info" style={{ fontSize: '0.72rem', padding: '0.2rem 0.6rem' }}>
                         {numPermisos} de {ALL_MODULE_KEYS.length} Módulos
                       </span>
                     </td>
-                    <td style={{ padding: '1rem' }}>
-                      <span className={`badge ${u.activo ? 'badge-success' : 'badge-danger'}`}>
+
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center', verticalAlign: 'middle' }}>
+                      <span className={`badge ${u.activo ? 'badge-success' : 'badge-danger'}`} style={{ width: '80px', justifyContent: 'center', display: 'inline-flex' }}>
                         {u.activo ? 'ACTIVO' : 'INACTIVO'}
                       </span>
                     </td>
-                    <td style={{ padding: '1rem', textAlign: 'center' }}>
-                      <div style={{ display: 'inline-flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+
+                    <td style={{ padding: '0.85rem 1rem', textAlign: 'center', verticalAlign: 'middle' }}>
+                      {/* Fixed 3-column grid for uniform aligned action buttons */}
+                      <div style={{ display: 'grid', gridTemplateColumns: '135px 95px 95px', gap: '0.4rem', justifyContent: 'center', alignItems: 'center' }}>
+                        
+                        {/* Column 1: Edit button */}
                         <button 
                           onClick={() => handleOpenEdit(u)}
                           className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem', fontWeight: 700 }}
+                          style={{ padding: '0.4rem 0.5rem', fontSize: '0.75rem', fontWeight: 700, width: '100%', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         >
-                          ✏️ Editar / Accesos
+                          ✏️ Editar Accesos
                         </button>
                         
+                        {/* Column 2: Status Toggle button */}
                         <button 
                           onClick={() => handleToggleStatus(u)}
                           className={`btn ${u.activo ? 'btn-secondary' : 'btn-success'}`}
-                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontWeight: 700 }}
+                          style={{ padding: '0.4rem 0.5rem', fontSize: '0.75rem', fontWeight: 700, width: '100%', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         >
                           {u.activo ? 'Desactivar' : 'Activar'}
                         </button>
 
-                        {u.id !== 1 && (
+                        {/* Column 3: Delete button or Protected badge */}
+                        {!isMainAdmin ? (
                           <button 
                             onClick={() => handleDeleteUser(u)}
                             className="btn btn-secondary"
-                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', color: '#e11d48', borderColor: '#fecdd3', background: '#fff1f2', fontWeight: 700 }}
+                            style={{ padding: '0.4rem 0.5rem', fontSize: '0.75rem', color: '#e11d48', borderColor: '#fecdd3', background: '#fff1f2', fontWeight: 700, width: '100%', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             title="Eliminar usuario del sistema"
                           >
                             🗑️ Eliminar
                           </button>
+                        ) : (
+                          <div 
+                            style={{ padding: '0.4rem 0.5rem', fontSize: '0.7rem', color: '#64748b', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', fontWeight: 700, width: '100%', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Usuario principal protegido contra borrado"
+                          >
+                            🔒 Principal
+                          </div>
                         )}
+
                       </div>
                     </td>
                   </tr>
                 );
               })}
+
               {users.length === 0 && (
                 <tr>
                   <td colSpan="7" style={{ padding: '2.5rem', textAlign: 'center', color: '#64748b' }}>
