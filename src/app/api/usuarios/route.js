@@ -94,3 +94,30 @@ export async function PUT(request) {
     return NextResponse.json({ error: 'Error al actualizar usuario: ' + err.message }, { status: 500 });
   }
 }
+
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    let id = searchParams.get('id');
+
+    if (!id) {
+      const body = await request.json().catch(() => ({}));
+      id = body.id;
+    }
+
+    const userId = Number(id);
+    if (!userId) {
+      return NextResponse.json({ error: 'ID de usuario no proporcionado' }, { status: 400 });
+    }
+
+    if (userId === 1) {
+      return NextResponse.json({ error: 'No se puede eliminar el usuario administrador principal del sistema' }, { status: 400 });
+    }
+
+    await query('DELETE FROM usuarios WHERE id = ?', [userId]);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error('Error al eliminar usuario:', err);
+    return NextResponse.json({ error: 'Error al eliminar usuario: ' + err.message }, { status: 500 });
+  }
+}

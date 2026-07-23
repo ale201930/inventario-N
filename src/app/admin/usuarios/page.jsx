@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
-import { showToast } from '@/components/CustomNotification';
+import { showToast, showConfirm } from '@/components/CustomNotification';
 
 const MODULE_CATEGORIES = [
   {
@@ -192,20 +192,44 @@ export default function AdminUsersPage() {
     } catch (err) {}
   };
 
+  const handleDeleteUser = (user) => {
+    if (user.id === 1) {
+      showToast('No se puede eliminar el usuario administrador principal del sistema', 'error');
+      return;
+    }
+
+    showConfirm({
+      title: 'Eliminar Usuario',
+      message: `¿Estás seguro de eliminar permanentemente al usuario "${user.nombre}" (${user.email})?`,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/usuarios?id=${user.id}`, { method: 'DELETE' });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Error al eliminar usuario');
+
+          showToast(`Usuario "${user.nombre}" eliminado correctamente`, 'success');
+          fetchUsers();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+    });
+  };
+
   return (
     <DashboardLayout>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 700 }}>Gestión de Usuarios y Accesos</h1>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e1b4b' }}>Gestión de Usuarios y Accesos</h1>
             <p style={{ color: '#64748b', fontSize: '0.85rem' }}>
-              Asignación de módulos y permisos para cada usuario de la empresa.
+              Asignación de módulos, control de permisos y eliminación de cuentas.
             </p>
           </div>
 
-          <button onClick={handleOpenCreate} className="btn btn-primary" style={{ padding: '0.75rem 1.25rem' }}>
-            Crear Usuario
+          <button onClick={handleOpenCreate} className="btn btn-primary" style={{ padding: '0.75rem 1.25rem', fontWeight: 700 }}>
+            + Crear Usuario
           </button>
         </div>
 
@@ -228,7 +252,7 @@ export default function AdminUsersPage() {
                 return (
                   <tr key={u.id} style={{ borderBottom: '1px solid #eff6ff' }}>
                     <td style={{ padding: '1rem', color: '#64748b', fontFamily: 'monospace' }}>#{u.id}</td>
-                    <td style={{ padding: '1rem', fontWeight: 600, color: '#0f172a' }}>{u.nombre}</td>
+                    <td style={{ padding: '1rem', fontWeight: 700, color: '#0f172a' }}>{u.nombre}</td>
                     <td style={{ padding: '1rem', color: '#64748b' }}>{u.email}</td>
                     <td style={{ padding: '1rem' }}>
                       <span className={`badge ${u.rol === 'ADMIN' ? 'badge-info' : 'badge-success'}`}>
@@ -246,21 +270,33 @@ export default function AdminUsersPage() {
                       </span>
                     </td>
                     <td style={{ padding: '1rem', textAlign: 'center' }}>
-                      <div style={{ display: 'inline-flex', gap: '0.5rem' }}>
+                      <div style={{ display: 'inline-flex', gap: '0.4rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                         <button 
                           onClick={() => handleOpenEdit(u)}
                           className="btn btn-secondary"
-                          style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem', fontWeight: 700 }}
                         >
-                          Editar / Accesos
+                          ✏️ Editar / Accesos
                         </button>
+                        
                         <button 
                           onClick={() => handleToggleStatus(u)}
-                          className={`btn ${u.activo ? 'btn-danger' : 'btn-success'}`}
-                          style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+                          className={`btn ${u.activo ? 'btn-secondary' : 'btn-success'}`}
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', fontWeight: 700 }}
                         >
                           {u.activo ? 'Desactivar' : 'Activar'}
                         </button>
+
+                        {u.id !== 1 && (
+                          <button 
+                            onClick={() => handleDeleteUser(u)}
+                            className="btn btn-secondary"
+                            style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', color: '#e11d48', borderColor: '#fecdd3', background: '#fff1f2', fontWeight: 700 }}
+                            title="Eliminar usuario del sistema"
+                          >
+                            🗑️ Eliminar
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
