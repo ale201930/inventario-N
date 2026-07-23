@@ -74,7 +74,6 @@ export default function Sidebar({ isOpen, onClose }) {
 
           <button 
             onClick={onClose}
-            style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#ffffff', width: '32px', height: '32px', borderRadius: '8px', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             className="mobile-close-btn"
             title="Cerrar Menú"
           >

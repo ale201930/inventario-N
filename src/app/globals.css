@@ -407,6 +407,20 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+.mobile-close-btn {
+  display: none !important;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Responsive Grid & Layout System */
 @media (max-width: 1024px) {
   .sidebar-container {
