@@ -68,14 +68,14 @@ export default function DashboardLayout({ children }) {
         </div>
       ) : (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', width: '100%' }}>
-          {/* Full Screen Module View (No Left Sidebar) - Top Bar with "← Volver" Button */}
+          {/* Full Screen Module View - Top Bar with Blue "← Volver" Button on Right */}
           <header style={{
             background: '#0f172a',
             borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '0.65rem 1.75rem',
+            padding: '0.75rem 1.75rem',
             display: 'flex',
             alignItems: 'center',
-            justify: 'space-between',
+            justifyContent: 'space-between',
             position: 'sticky',
             top: 0,
             zIndex: 1000,
@@ -84,45 +84,46 @@ export default function DashboardLayout({ children }) {
             {/* Top Left Brand Logo */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <div style={{
-                width: '34px',
-                height: '34px',
-                borderRadius: '9px',
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
                 background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justify: 'center',
                 color: '#ffffff',
                 fontWeight: 800,
-                fontSize: '0.9rem',
+                fontSize: '0.95rem',
                 boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
               }}>
                 INV
               </div>
-              <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#ffffff', letterSpacing: '0.04em' }}>
+              <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#ffffff', letterSpacing: '0.04em' }}>
                 INVENTARIO
               </div>
             </div>
 
-            {/* Top Right "Volver" Button */}
+            {/* Top Right Vibrant Blue "← Volver" Button */}
             <button 
               onClick={() => router.push('/inicio')}
-              className="btn-back"
+              className="btn"
               style={{
-                background: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
+                background: 'linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)',
+                border: '1px solid #3b82f6',
                 color: '#ffffff',
-                padding: '0.5rem 1rem',
+                padding: '0.55rem 1.25rem',
                 borderRadius: '10px',
-                fontSize: '0.85rem',
-                fontWeight: 700,
+                fontSize: '0.88rem',
+                fontWeight: 800,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                gap: '0.5rem',
+                boxShadow: '0 4px 14px rgba(37, 99, 235, 0.35)',
                 transition: 'all 0.2s ease'
               }}
             >
-              <span style={{ fontSize: '0.95rem', lineHeight: 1 }}>←</span>
+              <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>←</span>
               <span>Volver</span>
             </button>
           </header>
