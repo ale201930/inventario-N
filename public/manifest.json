@@ -1,0 +1,25 @@
+{
+  "short_name": "Inventario POS",
+  "name": "Sistema de Inventario y Punto de Venta",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#090d16",
+  "theme_color": "#3b82f6",
+  "display": "standalone",
+  "orientation": "any",
+  "scope": "/",
+  "description": "Sistema de Inventario, Fotografías y Punto de Venta con instalación de escritorio."
+}
